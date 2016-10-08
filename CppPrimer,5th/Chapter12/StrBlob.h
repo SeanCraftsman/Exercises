@@ -1,9 +1,16 @@
 #ifndef StrBlob_H
 #define StrBlob_H
 
+class StrBlobPtr;
+
 class StrBlob{
 public:
     typedef std::vector<std::string>::size_type size_type;
+    friend class StrBlobPtr;
+
+    StrBlobPtr begin();
+    StrBlobPtr end();
+
     StrBlob();
     StrBlob(std::initializer_list<std::string> il);
 
@@ -20,6 +27,20 @@ public:
 private:
     std::shared_ptr<std::vector<std::string>> data;
     void check(size_type i, const std::string &msg) const;
+};
+
+class StrBlobPtr{
+public:
+    StrBlobPtr():curr(0) { }
+    StrBlobPtr(StrBlob &a, size_t sz = 0):
+        wptr(a.data), curr(sz) { }
+    std::string& deref() const;
+    StrBlobPtr& incr();
+private:
+    std::shared_ptr<std::vector<std::string>>
+        check(std::size_t, const std::string&) const;
+    std::weak_ptr<std::vector<std::string>> wptr;
+    std::size_t curr;
 };
 
 
