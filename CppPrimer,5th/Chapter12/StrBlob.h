@@ -1,6 +1,12 @@
 #ifndef StrBlob_H
 #define StrBlob_H
 
+#include <string>
+#include <vector>
+#include <initializer_list>
+#include <memory>
+#include <exception>
+
 class StrBlobPtr;
 
 class StrBlob{
@@ -34,6 +40,7 @@ public:
     StrBlobPtr():curr(0) { }
     StrBlobPtr(StrBlob &a, size_t sz = 0):
         wptr(a.data), curr(sz) { }
+    bool operator!=(const StrBlobPtr& p) { return p.curr!=curr; }
     std::string& deref() const;
     StrBlobPtr& incr();
 private:

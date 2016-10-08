@@ -1,8 +1,4 @@
-#include <string>
-#include <vector>
-#include <initializer_list>
-#include <memory>
-#include <exception>
+
 #include "StrBlob.h"
 
 using std::vector; using std::string;
