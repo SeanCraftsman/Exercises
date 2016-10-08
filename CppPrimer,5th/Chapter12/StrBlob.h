@@ -8,14 +8,19 @@
 #include <exception>
 
 class StrBlobPtr;
+class ConstStrBlobPtr;
 
 class StrBlob{
 public:
     typedef std::vector<std::string>::size_type size_type;
-    friend class StrBlobPtr;
 
+    friend class StrBlobPtr;
     StrBlobPtr begin();
     StrBlobPtr end();
+
+    friend class ConstStrBlobPtr;
+    ConstStrBlobPtr begin() const;
+    ConstStrBlobPtr end() const;
 
     StrBlob();
     StrBlob(std::initializer_list<std::string> il);
@@ -40,12 +45,27 @@ public:
     StrBlobPtr():curr(0) { }
     StrBlobPtr(StrBlob &a, size_t sz = 0):
         wptr(a.data), curr(sz) { }
-    bool operator!=(const StrBlobPtr& p) { return p.curr!=curr; }
+    bool operator!=(const StrBlobPtr& p) { return p.curr != curr; }
     std::string& deref() const;
     StrBlobPtr& incr();
 private:
     std::shared_ptr<std::vector<std::string>>
         check(std::size_t, const std::string&) const;
+    std::weak_ptr<std::vector<std::string>> wptr;
+    std::size_t curr;
+};
+
+class ConstStrBlobPtr{
+public:
+    ConstStrBlobPtr():curr(0) { }
+    ConstStrBlobPtr(const StrBlob &a, size_t sz = 0):
+        wptr(a.data), curr(sz) { }
+    bool operator!=(ConstStrBlobPtr& p) { return p.curr != curr; }
+    const std::string& deref() const;
+    ConstStrBlobPtr& incr();
+private:
+    std::shared_ptr<std::vector<std::string>>
+        check(std::size_t i, const std::string&) const;
     std::weak_ptr<std::vector<std::string>> wptr;
     std::size_t curr;
 };
