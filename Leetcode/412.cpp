@@ -8,9 +8,7 @@ public:
                 temp += "Fizz";
             }
             else if(i % 5 != 0){
-                stringstream ss;
-                ss << i;
-                temp = ss.str();
+                temp = to_string(i);
             }
             if(i % 5 == 0){
                 temp += "Buzz";
